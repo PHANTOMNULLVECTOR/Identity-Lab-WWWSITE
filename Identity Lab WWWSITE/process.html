@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- NAV (same as homepage) -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="process.html" onclick="goToProcess(event)">Process</a>
+        <a href="about.html">About</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+
+      <button class="btn-secondary" onclick="openModal()">Login</button>
+    </div>
+  </nav>
+
+  <!-- 🔒 LOCKED MESSAGE -->
+  <section class="section center" id="lockedMessage">
+    <h2>You must be logged in to access the process</h2>
+    <button class="btn-primary" onclick="openModal()">Login to Continue</button>
+  </section>
+
+  <!-- ✅ PROCESS CONTENT (HIDDEN FIRST) -->
+  <section class="section" id="processContent" style="display:none;">
+    <div class="container center">
+
+      <h2>How the 28-Day System Works</h2>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Phase 1</h3>
+          <p>Identity selection and awareness</p>
+        </div>
+
+        <div class="card">
+          <h3>Phase 2</h3>
+          <p>Pattern interruption and tracking</p>
+        </div>
+
+        <div class="card">
+          <h3>Phase 3</h3>
+          <p>Repetition and reinforcement</p>
+        </div>
+
+        <div class="card">
+          <h3>Phase 4</h3>
+          <p>Stability and proof</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section> 
+
+  <!-- 💎 VALUE SECTION -->
+<section class="section" id="valueSection" style="display:none;">
+  <div class="container">
+
+    <h2 class="center">What You Are Paying For</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <i class="ri-focus-3-line"></i>
+        <h3>Structured 28-Day System</h3>
+        <p>
+          A step-by-step behavioral system designed to eliminate inconsistency
+          and force real identity change through repetition.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="ri-lock-line"></i>
+        <h3>Locked Progression</h3>
+        <p>
+          You cannot skip steps. Each phase must be completed, ensuring
+          real progress instead of motivation-based action.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="ri-edit-line"></i>
+        <h3>Deep Behavioral Prompts</h3>
+        <p>
+          You will go through precise questions that expose your patterns,
+          not surface-level journaling.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="ri-repeat-line"></i>
+        <h3>Repetition System</h3>
+        <p>
+          The system forces repetition until the behavior becomes stable,
+          not temporary.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="ri-eye-line"></i>
+        <h3>Self-Observation Training</h3>
+        <p>
+          You will learn to observe your actions honestly without distortion
+          or emotional bias.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="ri-shield-check-line"></i>
+        <h3>Proof-Based Identity</h3>
+        <p>
+          This is not motivation. You build identity through repeated
+          proof of behavior.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+  <!-- 💳 PAYMENT SECTION -->
+  <section class="section center" id="paymentSection" style="display:none;">
+    <div class="container" style="max-width: 600px;">
+
+      <p style="color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Energy Exchange</p>
+      <h2 style="margin-bottom: 10px;">KSh 4,444</h2>
+      <p style="margin-bottom: 20px;">One cycle. Eight phases. One behavioral truth.</p>
+      
+      <p style="color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 30px;">
+        This is not motivation. It is a structured identity diagnostic designed to expose drift, measure pattern, and build proof through repetition.
+      </p>
+
+      <a href="#contactSection" class="btn-primary" style="text-decoration: none; display: inline-block; padding: 14px 35px;">Enter the Lab</a>
+
+    </div>
+  </section>
+
+  <!-- 📩 CONTACT FORM -->
+<section class="section" id="contactSection" style="display:none;">
+  <div class="container">
+
+   <div class="payment-box">
+
+  <h3 class="payment-title">Complete Your Payment</h3>
+
+   <div class="mpesa-steps">
+    <p><strong>Payment Method:</strong> Pochi la Biashara</p>
+    <p><strong>Phone Number:</strong> 0742271124</p>
+  </div>
+
+  <!-- FORM -->
+   <div id="paymentStatusBox" class="payment-status"></div>
+<form class="payment-form">
+
+  <input type="text" placeholder="Your Full Name" required>
+
+  <input 
+    type="tel" 
+    placeholder="M-Pesa Phone Number (07XXXXXXXX)" 
+    inputmode="numeric" 
+    maxlength="10"
+    required
+  >
+
+  <input type="email" placeholder="Your Email" required>
+
+  <input 
+    type="text" 
+    id="mpesaCode"
+    placeholder="M-Pesa Transaction Code (e.g. QKJ8H2L9)" 
+    pattern="^[A-Z0-9]{8,10}$"
+    required
+  >
+
+  <!-- FILE INPUT NOW AT BOTTOM -->
+<input 
+  type="file" 
+  id="paymentScreenshot" 
+  accept="image/*"
+  required
+>
+
+  <img id="previewImage"
+       style="margin-top:10px; max-width:100%; display:none; border-radius:8px;" />
+
+  <button type="submit" class="btn-primary">
+    Submit Payment Details
+  </button>
+
+</form>
+
+  <p class="payment-note">
+    ⚠️ After payment, submit your details. Access is granted after manual verification.
+  </p>
+
+</div> 
+
+  </div>
+</section> 
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="logo-Photoroom.png" class="footer-logo">
+        <p>A structured system for behavioral truth, observation, and identity stability.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="process.html">Process</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+      <div class="footer-links">
+        <h4>Access</h4>
+        <p>Request access to enter the Lab.</p>
+        <p>Email: access@identitylab.com</p>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <div class="socials">
+          <a href="https://www.tiktok.com/@el.ra.otieno" target="_blank">
+            <i class="ri-tiktok-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>@ 2026 Identity Lab. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- LOGIN MODAL (COPY FROM INDEX) -->
+  <div class="modal" id="authModal">
+    <div class="modal-box">
+      <h2 id="authTitle">Login</h2>
+
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+
+      <button class="btn-primary" onclick="login()">Login</button>
+
+      <p class="switch" onclick="toggleAuth()">Create account</p>
+
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script> 
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> 
+
+    <script src="app.js"></script>
+
+  <!-- SUCCESS POPUP -->
+  <div class="modal" id="paymentSuccessModal" style="background:rgba(0,0,0,0.88); z-index:5000;">
+    <div class="modal-box" style="text-align:center; max-width:420px; padding:40px 30px;">
+      
+      <div style="width:70px; height:70px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
+        <i class="ri-time-line" style="font-size:30px; color:var(--gold);"></i>
+      </div>
+
+      <h2 style="margin-bottom:10px;">Payment Submitted</h2>
+
+      <p style="color:var(--muted); line-height:1.7; margin-bottom:10px;">
+        Your payment details have been received. Wait for the Identity Lab access password.
+      </p>
+
+      <p style="color:var(--gold); font-size:14px; margin-bottom:30px;">
+        It will be sent to your email.
+      </p>
+
+      <button class="btn-primary" onclick="window.location.href='access.html'" style="width:100%; padding:14px; font-size:16px;">
+        Go to Lab
+      </button>
+
+      <span class="close" onclick="document.getElementById('paymentSuccessModal').style.display='none'" style="margin-top:15px;">×</span>
+    </div>
+  </div>
+
+</body>
+</html>
+
+</body>
+</html>

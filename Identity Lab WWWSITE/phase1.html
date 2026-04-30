@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 1 | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <!-- PHASE CONTENT -->
+  <section class="section" style="padding-top:100px; padding-bottom:60px;">
+    <div class="phase-container">
+
+      <!-- PHASE HEADER -->
+      <div class="phase-header">
+        <p class="phase-label">Phase 1 of 8</p>
+        <h2>Observe the Pattern</h2>
+        <p class="phase-desc">Establish your current identity pattern through a structured 72-hour observation window. This phase is for detection, not correction.</p>
+      </div>
+
+      <!-- TIMER BOX -->
+      <div class="timer-box">
+        <div class="timer-row">
+          <i class="ri-time-line"></i>
+          <span>Observation Window</span>
+        </div>
+        <div class="timer-display" id="timerDisplay">72:00:00</div>
+        <div class="timer-stages">
+          <div class="timer-stage" id="stage1Status">
+            <i class="ri-check-line"></i> Stage 1 — Active
+          </div>
+          <div class="timer-stage locked" id="stage2Status">
+            <i class="ri-lock-line"></i> Stage 2 — Unlocks in 30h
+          </div>
+          <div class="timer-stage locked" id="stage3Status">
+            <i class="ri-lock-line"></i> Stage 3 — Locked
+          </div>
+        </div>
+      </div>
+
+      <!-- WARNING -->
+      <div class="phase-warning">
+        <i class="ri-alert-line"></i>
+        <span>You have a 72-hour observation window. Questions unlock progressively. Do not rush this phase.</span>
+      </div>
+
+      <!-- ALREADY COMPLETED MESSAGE (hidden by default) -->
+      <div class="phase-complete-box" id="phaseCompleteBox" style="display:none;">
+        <i class="ri-check-double-line" style="font-size:40px; color:var(--gold); margin-bottom:15px;"></i>
+        <h3>Phase 1 Already Completed</h3>
+        <p style="color:var(--muted); margin:15px 0;">You have already submitted your Phase 1 responses.</p>
+        <button class="btn-primary" onclick="window.location.href='lab.html'" style="margin-top:15px;">Back to Lab</button>
+      </div>
+
+      <!-- QUESTIONS AREA -->
+      <div id="questionsArea">
+
+        <!-- ========== STAGE 1 ========== -->
+        <div class="stage-section" id="stage1Section">
+          <div class="stage-label">Stage 1 — Observe</div>
+
+          <!-- Q1 -->
+          <div class="question-card">
+            <label>1. What behaviors keep repeating, even when you intend otherwise?</label>
+            <textarea id="q1" maxlength="999" placeholder="Write your observation..." data-min="120" data-max="999"></textarea>
+            <div class="char-count" id="q1Count">0 / 999</div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="question-card">
+            <label>2. Where is your current identity most stable?</label>
+            <input type="text" id="q2" maxlength="120" placeholder="Short answer..." data-min="10" data-max="120">
+            <div class="char-count" id="q2Count">0 / 120</div>
+          </div>
+        </div>
+
+        <!-- ========== STAGE 2 (LOCKED) ========== -->
+        <div class="stage-section stage-locked" id="stage2Section">
+          <div class="stage-lock-overlay" id="stage2Lock">
+            <i class="ri-lock-2-line"></i>
+            <p>Unlocks at 30 hours</p>
+            <span id="stage2Countdown"></span>
+          </div>
+          <div class="stage-label">Stage 2 — Notice</div>
+
+          <!-- Q3 -->
+          <div class="question-card">
+            <label>3. Based on what you have observed so far, what identity does your behavior appear to be reinforcing?</label>
+            <textarea id="q3" maxlength="999" placeholder="Write your observation..." data-min="120" data-max="999"></textarea>
+            <div class="char-count" id="q3Count">0 / 999</div>
+          </div>
+        </div>
+
+        <!-- ========== STAGE 3 (LOCKED) ========== -->
+        <div class="stage-section stage-locked" id="stage3Section">
+          <div class="stage-lock-overlay" id="stage3Lock">
+            <i class="ri-lock-2-line"></i>
+            <p>Unlocks at 60 hours</p>
+            <span id="stage3Countdown"></span>
+          </div>
+          <div class="stage-label">Stage 3 — Conclude</div>
+
+          <!-- Q4 -->
+          <div class="question-card">
+            <label>4. When pressure is low and no one is watching, who do you become most easily?</label>
+            <textarea id="q4" maxlength="999" placeholder="Write your observation..." data-min="120" data-max="999"></textarea>
+            <div class="char-count" id="q4Count">0 / 999</div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="question-card">
+            <label>5. What has this 72-hour window revealed about your default pattern?</label>
+            <textarea id="q5" maxlength="999" placeholder="Write your observation..." data-min="120" data-max="999"></textarea>
+            <div class="char-count" id="q5Count">0 / 999</div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="question-card">
+            <label>6. Where does your current identity weaken fastest?</label>
+            <input type="text" id="q6" maxlength="120" placeholder="Short answer..." data-min="10" data-max="120">
+            <div class="char-count" id="q6Count">0 / 120</div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="question-card">
+            <label>7. What do you keep tolerating from yourself that no longer matches your standard?</label>
+            <textarea id="q7" maxlength="999" placeholder="Write your observation..." data-min="120" data-max="999"></textarea>
+            <div class="char-count" id="q7Count">0 / 999</div>
+          </div>
+        </div>
+
+        <!-- SUBMIT AREA -->
+        <div id="submitArea" style="margin-top:30px;">
+          <div class="phase-warning" id="submitWarning" style="display:none;">
+            <i class="ri-alert-line"></i>
+            <span>You must complete the full 72-hour window before submitting.</span>
+          </div>
+          <button class="btn-primary" id="submitBtn" onclick="submitPhase1()" style="width:100%; padding:16px; font-size:16px;" disabled>
+            Complete Phase 1
+          </button>
+          <p style="color:var(--muted); font-size:12px; text-align:center; margin-top:10px;">
+            Your progress is saved automatically.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    /* =============================================
+       PHASE 1 CONFIG
+       ============================================= */
+
+    // === FOR TESTING: Change these to lower numbers ===
+var STAGE2_HOURS = 30;  // ~36 seconds
+var STAGE3_HOURS = 60;  // ~72 seconds
+var TOTAL_HOURS = 72;   // ~3 minutes
+    // === FOR PRODUCTION: Keep at 30, 60, 72 ===
+
+    var TIMER_INTERVAL = null;
+    var PHASE_START_TIME = null;
+    var PHASE_COMPLETED = false;
+    var saveTimeout = null;
+
+    /* =============================================
+       INITIALIZATION
+       ============================================= */
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.location.href = "access.html";
+        return;
+      }
+
+      // Check lab access
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) {
+          window.location.href = "access.html";
+          return;
+        }
+
+        var data = doc.data();
+
+        // Check if phase 1 already completed
+        if (data.phase_1_completed) {
+          document.getElementById("phaseCompleteBox").style.display = "block";
+          document.getElementById("questionsArea").style.display = "none";
+          document.querySelector(".timer-box").style.display = "none";
+          document.querySelector(".phase-warning").style.display = "none";
+          return;
+        }
+
+        // Load or set start time
+        if (data.phase_1_start_time) {
+          PHASE_START_TIME = new Date(data.phase_1_start_time);
+        } else {
+          PHASE_START_TIME = new Date();
+          db.collection("users").doc(user.uid).set({
+            phase_1_start_time: PHASE_START_TIME.toISOString()
+          }, { merge: true });
+        }
+
+        // Load saved answers
+        if (data.phase_1_answers) {
+          var answers = data.phase_1_answers;
+          var questionIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
+          questionIds.forEach(function(qId) {
+            if (answers[qId]) {
+              var el = document.getElementById(qId);
+              if (el) {
+                el.value = answers[qId];
+                updateCharCount(qId);
+              }
+            }
+          });
+        }
+
+        // Start timer and unlock stages
+        updateTimer();
+        TIMER_INTERVAL = setInterval(updateTimer, 60000); // Update every minute
+
+      }).catch(function(error) {
+        console.log("Error loading phase 1:", error);
+      });
+    });
+
+    /* =============================================
+       TIMER LOGIC
+       ============================================= */
+
+    function updateTimer() {
+      if (!PHASE_START_TIME) return;
+
+      var now = new Date();
+      var elapsedMs = now - PHASE_START_TIME;
+      var elapsedHours = elapsedMs / (1000 * 60 * 60);
+      var remainingMs = (TOTAL_HOURS * 60 * 60 * 1000) - elapsedMs;
+
+      // Update timer display
+      if (remainingMs <= 0) {
+        document.getElementById("timerDisplay").textContent = "00:00:00";
+      } else {
+        var totalSeconds = Math.floor(remainingMs / 1000);
+        var days = Math.floor(totalSeconds / 86400);
+        var hours = Math.floor((totalSeconds % 86400) / 3600);
+        var minutes = Math.floor((totalSeconds % 3600) / 60);
+        document.getElementById("timerDisplay").textContent =
+          String(days).padStart(2, "0") + ":" +
+          String(hours).padStart(2, "0") + ":" +
+          String(minutes).padStart(2, "0");
+      }
+
+      // Unlock Stage 2 at 30 hours
+      if (elapsedHours >= STAGE2_HOURS) {
+        document.getElementById("stage2Section").classList.remove("stage-locked");
+        document.getElementById("stage2Lock").style.display = "none";
+        document.getElementById("stage2Status").innerHTML = '<i class="ri-check-line"></i> Stage 2 — Unlocked';
+        document.getElementById("stage2Status").classList.remove("locked");
+      } else {
+        var stage2Left = Math.ceil(STAGE2_HOURS - elapsedHours);
+        document.getElementById("stage2Status").innerHTML = '<i class="ri-lock-line"></i> Stage 2 — Unlocks in ' + stage2Left + 'h';
+        document.getElementById("stage2Countdown").textContent = stage2Left + ' hours remaining';
+      }
+
+      // Unlock Stage 3 at 60 hours
+      if (elapsedHours >= STAGE3_HOURS) {
+        document.getElementById("stage3Section").classList.remove("stage-locked");
+        document.getElementById("stage3Lock").style.display = "none";
+        document.getElementById("stage3Status").innerHTML = '<i class="ri-check-line"></i> Stage 3 — Unlocked';
+        document.getElementById("stage3Status").classList.remove("locked");
+      } else {
+        var stage3Left = Math.ceil(STAGE3_HOURS - elapsedHours);
+        document.getElementById("stage3Status").innerHTML = '<i class="ri-lock-line"></i> Stage 3 — Unlocks in ' + stage3Left + 'h';
+        document.getElementById("stage3Countdown").textContent = stage3Left + ' hours remaining';
+      }
+
+      // Check if can submit (72 hours)
+      checkSubmitReady();
+    }
+
+    /* =============================================
+       CHARACTER COUNTING
+       ============================================= */
+
+    var allQuestionIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
+
+    allQuestionIds.forEach(function(qId) {
+      var el = document.getElementById(qId);
+      if (el) {
+        el.addEventListener("input", function() {
+          updateCharCount(qId);
+          autoSave();
+        });
+      }
+    });
+
+    function updateCharCount(qId) {
+      var el = document.getElementById(qId);
+      var countEl = document.getElementById(qId + "Count");
+      if (!el || !countEl) return;
+
+      var length = el.value.trim().length;
+      var min = parseInt(el.getAttribute("data-min"));
+      var max = parseInt(el.getAttribute("data-max"));
+
+      countEl.textContent = length + " / " + max;
+
+      countEl.className = "char-count";
+      if (length < min) {
+        countEl.classList.add("error");
+        countEl.textContent = length + " / " + max + " (min " + min + ")";
+      } else if (length > max) {
+        countEl.classList.add("error");
+      } else {
+        countEl.classList.add("ok");
+      }
+    }
+
+    /* =============================================
+       AUTOSAVE
+       ============================================= */
+
+    function autoSave() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(function() {
+        saveAnswers();
+      }, 2000); // Save 2 seconds after typing stops
+    }
+
+    function saveAnswers() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var answers = {};
+      allQuestionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value;
+      });
+
+      db.collection("users").doc(user.uid).set({
+        phase_1_answers: answers
+      }, { merge: true })
+      .then(function() {
+        console.log("✅ Answers saved");
+      })
+      .catch(function(error) {
+        console.log("❌ Save error:", error);
+      });
+    }
+
+    /* =============================================
+       SUBMISSION
+       ============================================= */
+
+    function checkSubmitReady() {
+      var now = new Date();
+      var elapsedMs = now - PHASE_START_TIME;
+      var elapsedHours = elapsedMs / (1000 * 60 * 60);
+
+      var btn = document.getElementById("submitBtn");
+      var warning = document.getElementById("submitWarning");
+
+      if (elapsedHours < TOTAL_HOURS) {
+        btn.disabled = true;
+        btn.style.opacity = "0.4";
+        warning.style.display = "flex";
+        var hoursLeft = Math.ceil(TOTAL_HOURS - elapsedHours);
+        warning.querySelector("span").textContent = "You must complete the full 72-hour window before submitting. " + hoursLeft + " hours remaining.";
+        return;
+      }
+
+      // Check all answers meet minimum
+      var allValid = true;
+      allQuestionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (!el) return;
+        var min = parseInt(el.getAttribute("data-min"));
+        if (el.value.trim().length < min) {
+          allValid = false;
+        }
+      });
+
+      if (allValid) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        warning.style.display = "none";
+      } else {
+        btn.disabled = true;
+        btn.style.opacity = "0.4";
+        warning.style.display = "flex";
+        warning.querySelector("span").textContent = "Answer all questions with the minimum required characters before submitting.";
+      }
+    }
+
+    function submitPhase1() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      // Final validation
+      var allValid = true;
+      var validationErrors = [];
+
+      allQuestionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (!el) return;
+        var min = parseInt(el.getAttribute("data-min"));
+        var max = parseInt(el.getAttribute("data-max"));
+        var text = el.value.trim();
+
+        if (text.length < min) {
+          allValid = false;
+          validationErrors.push("Question " + qId.replace("q", "") + " needs at least " + min + " characters.");
+        }
+        if (text.length > max) {
+          allValid = false;
+          validationErrors.push("Question " + qId.replace("q", "") + " exceeds " + max + " characters.");
+        }
+      });
+
+      if (!allValid) {
+        alert("Please fix the following:\n\n" + validationErrors.join("\n"));
+        return;
+      }
+
+      // Disable button
+      var btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+      btn.style.opacity = "0.6";
+
+      // Save final answers and mark complete
+      var answers = {};
+      allQuestionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value.trim();
+      });
+
+      db.collection("users").doc(user.uid).set({
+        phase_1_answers: answers,
+        phase_1_completed: true,
+        phase_1_submitted_at: new Date().toISOString(),
+        current_phase: 2
+      }, { merge: true })
+      .then(function() {
+  alert("Phase 1 submitted successfully.");
+  if (TIMER_INTERVAL) clearInterval(TIMER_INTERVAL);
+  window.location.href = "phase1-complete.html";
+})
+      .catch(function(error) {
+        alert("Submission failed. Try again.");
+        btn.disabled = false;
+        btn.textContent = "Complete Phase 1";
+        btn.style.opacity = "1";
+        console.log("Submit error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>

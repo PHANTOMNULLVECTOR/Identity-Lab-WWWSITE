@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3 Complete | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <!-- COMPLETION SECTION -->
+  <section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="phase-container">
+
+      <div class="complete-box">
+
+        <div style="width:70px; height:70px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 25px;">
+          <i class="ri-check-double-line" style="font-size:32px; color:var(--gold);"></i>
+        </div>
+
+        <p class="phase-label">Phase 3 Complete</p>
+        <h2 style="margin-bottom:10px;">Pressure Test Recorded</h2>
+
+        <p style="color:var(--muted); line-height:1.6; margin-bottom:25px;">
+          Your responses have been documented. This is not evaluation. This is a diagnostic record of how your standard behaved under real conditions.
+        </p>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="ri-file-text-line"></i>
+            <p class="stat-number">5</p>
+            <p class="stat-label">Questions</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-edit-line"></i>
+            <p class="stat-number" id="statWords">—</p>
+            <p class="stat-label">Words</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-check-double-line"></i>
+            <p class="stat-number" style="color:var(--gold);">Done</p>
+            <p class="stat-label">Status</p>
+          </div>
+        </div>
+
+        <div class="closing-statement" style="margin-top:25px;">
+          <p>The pressure test is complete. Phase 4 will refine the structure based on what survived and what didn't.</p>
+        </div>
+
+        <!-- CODE REQUEST SECTION -->
+        <div class="code-request-box" id="codeRequestBox" style="margin-top:25px;">
+          <h3>Ready for Phase 4</h3>
+          <p style="color:var(--muted); font-size:14px; margin:10px 0 20px; line-height:1.6;">
+            Phase 4 requires an access code. Click below to request your unique code.
+          </p>
+
+          <!-- STATUS -->
+          <div id="codeStatus" style="display:none; padding:12px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px;"></div>
+
+          <!-- REQUEST BUTTON -->
+          <button class="btn-primary" id="requestBtn" onclick="requestPhase4Code()" style="width:100%; padding:14px; font-size:16px;">
+            Request Phase 4 Access Code
+          </button>
+
+          <!-- ENTER CODE BUTTON -->
+          <button class="btn-secondary" id="enterCodeBtn" onclick="window.location.href='phase4-entry.html'" style="width:100%; padding:14px; font-size:16px; margin-top:10px; display:none;">
+            Enter Phase 4
+          </button>
+        </div>
+
+        <!-- BACK LINK -->
+        <p style="text-align:center; margin-top:25px;">
+          <a href="lab.html" style="color:var(--muted); text-decoration:none; font-size:13px;">
+            <i class="ri-arrow-left-line"></i> Back to Lab
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    var CODE_REQUESTED = false;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.location.href = "access.html";
+        return;
+      }
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().phase_3_completed) {
+          window.location.href = "lab.html";
+          return;
+        }
+
+        var data = doc.data();
+
+        // Count words
+        var totalWords = 0;
+        if (data.phase_3_answers) {
+          var keys = Object.keys(data.phase_3_answers);
+          for (var i = 0; i < keys.length; i++) {
+            var val = data.phase_3_answers[keys[i]];
+            if (val) {
+              var cleaned = val.trim().replace(/[^a-zA-Z0-9\s]/g, "");
+              var parts = cleaned.split(" ");
+              for (var j = 0; j < parts.length; j++) {
+                if (parts[j].length > 0) {
+                  totalWords++;
+                }
+              }
+            }
+          }
+        }
+        document.getElementById("statWords").textContent = totalWords;
+
+        if (data.phase_4_code) {
+          showExistingCode(data.phase_4_code);
+        }
+
+      }).catch(function(error) {
+        console.log("Error:", error);
+      });
+    });
+
+    function showCodeStatus(message, color) {
+      var box = document.getElementById("codeStatus");
+      box.style.display = "block";
+      box.style.color = color;
+      if (color === "lightgreen") {
+        box.style.background = "rgba(0,255,0,0.08)";
+      } else if (color === "orange") {
+        box.style.background = "rgba(255,165,0,0.08)";
+      } else {
+        box.style.background = "rgba(255,0,0,0.08)";
+      }
+      box.textContent = message;
+    }
+
+    function showExistingCode(code) {
+      CODE_REQUESTED = true;
+      document.getElementById("requestBtn").style.display = "none";
+      document.getElementById("enterCodeBtn").style.display = "block";
+    }
+
+    function generateCode() {
+      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      var code = "PL-";
+      for (var i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    }
+
+    function requestPhase4Code() {
+      if (CODE_REQUESTED) return;
+
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var btn = document.getElementById("requestBtn");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      showCodeStatus("Sending your code to " + user.email + "...", "orange");
+
+      var newCode = generateCode();
+
+      db.collection("users").doc(user.uid).set({
+        phase_4_code: newCode,
+        phase_4_code_created: new Date().toISOString()
+      }, { merge: true })
+      .then(function() {
+        return emailjs.send("service_9bn2nfs", "template_4xf9sq6", {
+          to_email: user.email,
+          phase_code: newCode
+        });
+      })
+      .then(function() {
+        showExistingCode(newCode);
+        showCodeStatus("Your access code has been sent to " + user.email + ". Check your inbox.", "lightgreen");
+      })
+      .catch(function(error) {
+        showExistingCode(newCode);
+        showCodeStatus("Code generated but email failed. Contact support.", "red");
+        console.log("Email error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+</html>

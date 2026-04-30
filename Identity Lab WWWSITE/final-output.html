@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cycle Complete | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Back to Lab</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:100px; padding-bottom:80px;">
+    <div class="phase-container">
+
+      <!-- CONGRATULATIONS -->
+      <div style="text-align:center; margin-bottom:35px;">
+        <div style="width:80px; height:80px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
+          <i class="ri-trophy-line" style="font-size:36px; color:var(--gold);"></i>
+        </div>
+        <p class="phase-label">28-Day Cycle Complete</p>
+        <h2 style="margin-bottom:10px;">Congratulations.</h2>
+        <p style="color:var(--muted); line-height:1.6; max-width:420px; margin:0 auto;">
+          You have completed all eight phases. Your behavioral interpretation is below.
+        </p>
+      </div>
+
+      <!-- USER CARD -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <div style="text-align:center; margin-bottom:20px;">
+          <div style="width:60px; height:60px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+            <i class="ri-user-line" style="font-size:24px; color:var(--gold);"></i>
+          </div>
+          <p style="color:var(--gold); font-size:12px; text-transform:uppercase; letter-spacing:2px;">Your Identity Profile</p>
+          <h3 id="userEmailDisplay" style="color:var(--text); font-size:16px; margin-top:8px;">—</h3>
+        </div>
+
+        <div style="border-top:1px solid var(--border); padding-top:15px;">
+          <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Cycle Completed</p>
+          <p id="completionDate" style="color:var(--text); font-size:14px;">—</p>
+        </div>
+      </div>
+
+      <!-- WHO YOU BECAME -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Based on the evidence, who have you been becoming?</p>
+        <p id="whoBecoming" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- YOUR STANDARD -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Your Behavioral Standard</p>
+        <p id="yourStandard" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- WHAT HELD -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">What Held Through This Cycle</p>
+        <p id="whatHeld" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- WHAT CHANGED -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">What Changed in a Measurable Way</p>
+        <p id="whatChanged" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- NEW BASELINE -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Your Baseline Going Forward</p>
+        <p id="newBaseline" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- WHAT YOU'RE CLOSING -->
+      <div class="output-card" style="margin-bottom:25px;">
+        <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">What You Are Closing</p>
+        <p id="whatClosing" style="color:var(--text); font-size:15px; line-height:1.7;">—</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid" style="margin-bottom:25px;">
+        <div class="stat-card">
+          <i class="ri-bar-chart-box-line"></i>
+          <p class="stat-number">8</p>
+          <p class="stat-label">Phases</p>
+        </div>
+        <div class="stat-card">
+          <i class="ri-edit-line"></i>
+          <p class="stat-number" id="totalWords">—</p>
+          <p class="stat-label">Total Words</p>
+        </div>
+        <div class="stat-card">
+          <i class="ri-check-double-line"></i>
+          <p class="stat-number" style="color:var(--gold);">Proof</p>
+          <p class="stat-label">Status</p>
+        </div>
+      </div>
+
+      <!-- CLOSING -->
+      <div style="background:rgba(191,161,74,0.06); border:1px solid rgba(191,161,74,0.2); border-radius:12px; padding:25px; text-align:center; margin-bottom:25px;">
+        <p style="color:var(--text); font-size:15px; line-height:1.7; font-weight:500;">
+          This cycle is closed based on proof, not intention. Your identity has been documented through behavioral evidence across 28 days.
+        </p>
+      </div>
+
+      <div style="text-align:center;">
+        <button class="btn-primary" onclick="window.location.href='lab.html'" style="padding:14px 30px; font-size:15px;">
+          Back to Lab
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="logo-Photoroom.png" class="footer-logo">
+        <p>A structured system for behavioral truth, observation, and identity stability.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="process.html">Process</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+      <div class="footer-links">
+        <h4>Access</h4>
+        <p>Request access to enter the Lab.</p>
+        <p>Email: access@identitylab.com</p>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <div class="socials">
+           <a href="https://www.tiktok.com/@el.ra.otieno" target="_blank">
+            <i class="ri-tiktok-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>@ 2026 Identity Lab. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) { window.location.href = "access.html"; return; }
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().cycle_completed) {
+          window.location.href = "lab.html";
+          return;
+        }
+
+        var data = doc.data();
+
+        // User email
+        document.getElementById("userEmailDisplay").textContent = user.email;
+
+        // Completion date
+        if (data.cycle_completed_at) {
+          var date = new Date(data.cycle_completed_at);
+          var options = { year: 'numeric', month: 'long', day: 'numeric' };
+          document.getElementById("completionDate").textContent = date.toLocaleDateString('en-US', options);
+        }
+
+        // Who you became (Phase 6 Q5)
+        if (data.phase_6_answers && data.phase_6_answers.q5_who_becoming) {
+          document.getElementById("whoBecoming").textContent = data.phase_6_answers.q5_who_becoming;
+        }
+
+        // Your standard (Phase 2 Q5)
+        if (data.phase_2_answers && data.phase_2_answers.q5_standard_declaration) {
+          document.getElementById("yourStandard").textContent = data.phase_2_answers.q5_standard_declaration;
+        }
+
+        // What held (Phase 8 Q1)
+        if (data.phase_8_answers && data.phase_8_answers.q1_what_held) {
+          document.getElementById("whatHeld").textContent = data.phase_8_answers.q1_what_held;
+        }
+
+        // What changed (Phase 8 Q2)
+        if (data.phase_8_answers && data.phase_8_answers.q2_what_changed) {
+          document.getElementById("whatChanged").textContent = data.phase_8_answers.q2_what_changed;
+        }
+
+        // New baseline (Phase 8 Q3)
+        if (data.phase_8_answers && data.phase_8_answers.q3_new_baseline) {
+          document.getElementById("newBaseline").textContent = data.phase_8_answers.q3_new_baseline;
+        }
+
+        // What closing (Phase 8 Q4)
+        if (data.phase_8_answers && data.phase_8_answers.q4_what_closing) {
+          document.getElementById("whatClosing").textContent = data.phase_8_answers.q4_what_closing;
+        }
+
+        // Total word count across all phases
+        var totalWords = 0;
+        var phaseKeys = [
+          "phase_1_answers", "phase_2_answers", "phase_3_answers",
+          "phase_4_answers", "phase_5_answers", "phase_6_answers",
+          "phase_7_answers", "phase_8_answers"
+        ];
+
+        phaseKeys.forEach(function(key) {
+          if (data[key]) {
+            var answers = data[key];
+            var aKeys = Object.keys(answers);
+            for (var i = 0; i < aKeys.length; i++) {
+              var val = answers[aKeys[i]];
+              if (val && typeof val === "string") {
+                var cleaned = val.trim().replace(/[^a-zA-Z0-9\s]/g, "");
+                var parts = cleaned.split(" ");
+                for (var j = 0; j < parts.length; j++) {
+                  if (parts[j].length > 0) totalWords++;
+                }
+              }
+            }
+          }
+        });
+
+        document.getElementById("totalWords").textContent = totalWords;
+
+      }).catch(function(error) {
+        console.log("Error:", error);
+      });
+    });
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 6 | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:100px; padding-bottom:60px;">
+    <div class="phase-container">
+
+      <!-- HEADER -->
+      <div class="phase-header">
+        <p class="phase-label">Phase 6 of 8</p>
+        <h2>Face the Evidence</h2>
+        <p class="phase-desc">Six phases of data now exist. This phase strips interpretation and confronts what the evidence actually shows.</p>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="phase-progress-bar">
+        <div class="phase-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <p style="color:var(--muted); font-size:12px; text-align:center; margin-bottom:25px;" id="progressText">0 of 5 completed</p>
+
+      <!-- ALREADY COMPLETED -->
+      <div class="phase-complete-box" id="phaseCompleteBox" style="display:none;">
+        <i class="ri-check-double-line" style="font-size:40px; color:var(--gold); margin-bottom:15px;"></i>
+        <h3>Phase 6 Already Completed</h3>
+        <p style="color:var(--muted); margin:15px 0;">You have already faced the evidence.</p>
+        <button class="btn-primary" onclick="window.location.href='lab.html'" style="margin-top:15px;">Back to Lab</button>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div id="questionsArea">
+
+        <!-- Q1 -->
+        <div class="question-card" id="card1">
+          <div class="q-number">1</div>
+          <label>What has your behavior consistently shown over the last stretch?</label>
+          <textarea id="q1_consistent_behavior" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q1_consistent_behaviorCount">0 / 999 (min 120)</div>
+          <button class="btn-primary" onclick="nextQuestion(2)" style="width:100%; margin-top:10px; padding:12px;">Next</button>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card" id="card2" style="display:none;">
+          <div class="q-number">2</div>
+          <label>Where does your standard still weaken, even after progress?</label>
+          <textarea id="q2_standard_weakness" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q2_standard_weaknessCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(1)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextQuestion(3)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card" id="card3" style="display:none;">
+          <div class="q-number">3</div>
+          <label>What result or pattern can now be treated as real proof, not hope?</label>
+          <textarea id="q3_real_proof" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q3_real_proofCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(2)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextQuestion(4)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-card" id="card4" style="display:none;">
+          <div class="q-number">4</div>
+          <label>What are you forced to admit now that the evidence is visible?</label>
+          <div style="background:rgba(191,161,74,0.06); border:1px solid rgba(191,161,74,0.15); border-radius:6px; padding:8px 10px; margin-bottom:12px;">
+            <p style="color:var(--gold); font-size:12px; line-height:1.4;">Do not write what you wish were true. Write what the data shows.</p>
+          </div>
+          <textarea id="q4_forced_admission" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q4_forced_admissionCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(3)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextQuestion(5)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- Q5 (FINAL) -->
+        <div class="question-card" id="card5" style="display:none;">
+          <div class="q-number">5</div>
+          <label>Based on the evidence, who have you actually been becoming in this cycle?</label>
+          <textarea id="q5_who_becoming" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q5_who_becomingCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(4)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="saveAndContinue()" style="flex:1; padding:12px;">Save and Continue</button>
+          </div>
+        </div>
+
+        <!-- SUBMIT SECTION -->
+        <div id="submitSection" style="display:none; margin-top:25px;">
+          <div class="closing-statement">
+            <p>This is the evidence phase. No interpretation. No justification. Only what the pattern has shown. Submit when ready.</p>
+          </div>
+          <button class="btn-primary" id="submitBtn" onclick="submitPhase6()" style="width:100%; padding:16px; font-size:16px;">
+            Complete Phase 6
+          </button>
+          <p style="color:var(--muted); font-size:12px; text-align:center; margin-top:10px;">
+            Your progress is saved automatically.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+
+    var questionIds = [
+      "q1_consistent_behavior",
+      "q2_standard_weakness",
+      "q3_real_proof",
+      "q4_forced_admission",
+      "q5_who_becoming"
+    ];
+
+    var currentQ = 1;
+    var saveTimeout = null;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) { window.location.href = "access.html"; return; }
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) { window.location.href = "access.html"; return; }
+
+        var data = doc.data();
+
+        if (!data.phase_5_completed) { window.location.href = "lab.html"; return; }
+
+        if (data.phase_6_completed) {
+          document.getElementById("phaseCompleteBox").style.display = "block";
+          document.getElementById("questionsArea").style.display = "none";
+          document.querySelector(".phase-progress-bar").style.display = "none";
+          document.getElementById("progressText").style.display = "none";
+          return;
+        }
+
+        if (data.phase_6_answers) {
+          questionIds.forEach(function(qId) {
+            if (data.phase_6_answers[qId]) {
+              var el = document.getElementById(qId);
+              if (el) { el.value = data.phase_6_answers[qId]; updateCount(qId); }
+            }
+          });
+        }
+
+        questionIds.forEach(function(qId) {
+          var el = document.getElementById(qId);
+          if (el) { el.addEventListener("input", function() { updateCount(qId); autoSavePhase6(); }); }
+        });
+
+        updateProgress();
+
+      }).catch(function(error) { console.log("Error:", error); });
+    });
+
+    function updateCount(qId) {
+      var el = document.getElementById(qId);
+      var countEl = document.getElementById(qId + "Count");
+      if (!el || !countEl) return;
+
+      var length = el.value.trim().length;
+      var min = parseInt(el.getAttribute("data-min"));
+      var max = parseInt(el.getAttribute("data-max"));
+
+      countEl.textContent = length + " / " + max + " (min " + min + ")";
+      countEl.className = "char-count";
+      if (length < min) countEl.classList.add("error");
+      else if (length > max) countEl.classList.add("error");
+      else countEl.classList.add("ok");
+    }
+
+    function autoSavePhase6() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(function() { savePhase6Answers(); }, 2000);
+    }
+
+    function savePhase6Answers() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var answers = {};
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value;
+      });
+
+      db.collection("users").doc(user.uid).set({
+        phase_6_answers: answers
+      }, { merge: true })
+      .then(function() { console.log("Phase 6 saved"); })
+      .catch(function(error) { console.log("Save error:", error); });
+    }
+
+    function nextQuestion(num) {
+      savePhase6Answers();
+
+      for (var i = 1; i <= 5; i++) { document.getElementById("card" + i).style.display = "none"; }
+      document.getElementById("submitSection").style.display = "none";
+
+      if (num >= 1 && num <= 5) {
+        document.getElementById("card" + num).style.display = "block";
+        currentQ = num;
+      }
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateProgress() {
+      var answered = 0;
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el && el.value.trim().length >= parseInt(el.getAttribute("data-min"))) answered++;
+      });
+
+      var percent = (answered / 5) * 100;
+      document.getElementById("progressFill").style.width = percent + "%";
+      document.getElementById("progressText").textContent = answered + " of 5 completed";
+    }
+
+    function saveAndContinue() {
+      savePhase6Answers();
+      for (var i = 1; i <= 5; i++) { document.getElementById("card" + i).style.display = "none"; }
+      document.getElementById("submitSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function submitPhase6() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var btn = document.getElementById("submitBtn");
+      var errors = [];
+
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (!el) return;
+        var min = parseInt(el.getAttribute("data-min"));
+        var max = parseInt(el.getAttribute("data-max"));
+        var text = el.value.trim();
+
+        if (text.length < min) errors.push("Question " + qId.replace("q", "") + " needs at least " + min + " characters.");
+        if (text.length > max) errors.push("Question " + qId.replace("q", "") + " exceeds " + max + " characters.");
+      });
+
+      if (errors.length > 0) { alert("Please fix:\n\n" + errors.join("\n")); return; }
+
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      var answers = {};
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value.trim();
+      });
+
+      db.collection("users").doc(user.uid).set({
+        phase_6_answers: answers,
+        phase_6_completed: true,
+        phase_6_submitted_at: new Date().toISOString(),
+        current_phase: 7
+      }, { merge: true })
+      .then(function() {
+        alert("Phase 6 submitted successfully.");
+        window.location.href = "phase6-complete.html";
+      })
+      .catch(function(error) {
+        alert("Submission failed. Try again.");
+        btn.disabled = false;
+        btn.textContent = "Complete Phase 6";
+        console.log("Error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>

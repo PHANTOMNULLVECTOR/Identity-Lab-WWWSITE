@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 1 Complete | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <!-- COMPLETION SECTION -->
+  <section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="phase-container">
+
+      <div class="complete-box">
+
+        <!-- CHECK ICON -->
+        <div style="width:70px; height:70px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 25px;">
+          <i class="ri-check-line" style="font-size:32px; color:var(--gold);"></i>
+        </div>
+
+        <p class="phase-label">Phase 1 Complete</p>
+
+        <h2 style="margin-bottom:10px;">Observation Window Closed</h2>
+
+        <p style="color:var(--muted); line-height:1.6; margin-bottom:30px;">
+          Your 72-hour observation has been submitted. Below is a summary of your input.
+        </p>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="ri-file-text-line"></i>
+            <p class="stat-number" id="statQuestions">7</p>
+            <p class="stat-label">Questions Answered</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-time-line"></i>
+            <p class="stat-number" id="statTime">—</p>
+            <p class="stat-label">Time Invested</p>
+          </div>
+          <div class="stat-card">
+            <i class="ri-edit-line"></i>
+            <p class="stat-number" id="statWords">—</p>
+            <p class="stat-label">Words Written</p>
+          </div>
+        </div>
+
+        <!-- STAGE BREAKDOWN -->
+        <div class="stage-breakdown">
+          <div class="stage-row">
+            <span class="stage-name">Stage 1 — Observe</span>
+            <span class="stage-badge done"><i class="ri-check-line"></i> Complete</span>
+          </div>
+          <div class="stage-row">
+            <span class="stage-name">Stage 2 — Notice</span>
+            <span class="stage-badge done"><i class="ri-check-line"></i> Complete</span>
+          </div>
+          <div class="stage-row">
+            <span class="stage-name">Stage 3 — Conclude</span>
+            <span class="stage-badge done"><i class="ri-check-line"></i> Complete</span>
+          </div>
+        </div>
+
+        <!-- CLOSING STATEMENT -->
+        <div class="closing-statement">
+          <p>
+            You have completed the observation phase. Your responses have been recorded. This is not evaluation. This is documentation.
+          </p>
+        </div>
+
+        <!-- CODE REQUEST SECTION -->
+        <div class="code-request-box" id="codeRequestBox">
+          <h3>Ready for Phase 2</h3>
+          <p style="color:var(--muted); font-size:14px; margin:10px 0 20px; line-height:1.6;">
+            Phase 2 requires an access code. Click below to request your unique code.
+          </p>
+
+          <!-- STATUS -->
+          <div id="codeStatus" style="display:none; padding:12px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px;"></div>
+
+         
+
+          <!-- REQUEST BUTTON -->
+          <button class="btn-primary" id="requestBtn" onclick="requestPhase2Code()" style="width:100%; padding:14px; font-size:16px;">
+            Request Phase 2 Access Code
+          </button>
+
+          <!-- ENTER CODE BUTTON (hidden until code requested) -->
+          <button class="btn-secondary" id="enterCodeBtn" onclick="window.location.href='phase2-entry.html'" style="width:100%; padding:14px; font-size:16px; margin-top:10px; display:none;">
+            Enter Phase 2
+          </button>
+        </div>
+
+        <!-- BACK LINK -->
+        <p style="text-align:center; margin-top:25px;">
+          <a href="lab.html" style="color:var(--muted); text-decoration:none; font-size:13px;">
+            <i class="ri-arrow-left-line"></i> Back to Lab
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    var CODE_REQUESTED = false;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.location.href = "access.html";
+        return;
+      }
+
+      // Load user data for stats
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists) {
+          window.location.href = "access.html";
+          return;
+        }
+
+        var data = doc.data();
+
+        // Check if phase 1 was completed
+        if (!data.phase_1_completed) {
+          window.location.href = "phase1.html";
+          return;
+        }
+
+        // Calculate time invested
+        if (data.phase_1_start_time && data.phase_1_submitted_at) {
+          var start = new Date(data.phase_1_start_time);
+          var end = new Date(data.phase_1_submitted_at);
+          var diffMs = end - start;
+          var diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+          var diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+          if (diffHours >= 24) {
+            var days = Math.floor(diffHours / 24);
+            var remainHours = diffHours % 24;
+            document.getElementById("statTime").textContent = days + "d " + remainHours + "h";
+          } else {
+            document.getElementById("statTime").textContent = diffHours + "h " + diffMinutes + "m";
+          }
+        }
+
+        // Count total words
+        var totalWords = 0;
+        if (data.phase_1_answers) {
+          var answers = data.phase_1_answers;
+          var questionIds = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
+          questionIds.forEach(function(qId) {
+            if (answers[qId]) {
+              var words = answers[qId].trim().split(/\s+/).filter(function(w) { return w.length > 0; });
+              totalWords += words.length;
+            }
+          });
+        }
+        document.getElementById("statWords").textContent = totalWords;
+
+        // Check if code already requested
+        if (data.phase_2_code) {
+          showExistingCode(data.phase_2_code);
+        }
+
+      }).catch(function(error) {
+        console.log("Error loading data:", error);
+      });
+    });
+
+    function showCodeStatus(message, color) {
+      var box = document.getElementById("codeStatus");
+      box.style.display = "block";
+      box.style.color = color;
+      if (color === "lightgreen") {
+        box.style.background = "rgba(0,255,0,0.08)";
+      } else if (color === "orange") {
+        box.style.background = "rgba(255,165,0,0.08)";
+      } else {
+        box.style.background = "rgba(255,0,0,0.08)";
+      }
+      box.textContent = message;
+    }
+
+        function showExistingCode(code) {
+      CODE_REQUESTED = true;
+      document.getElementById("requestBtn").style.display = "none";
+      document.getElementById("enterCodeBtn").style.display = "block";
+    }
+
+
+    function generateCode() {
+      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      var code = "PL-";
+      for (var i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    }
+
+          function requestPhase2Code() {
+      if (CODE_REQUESTED) return;
+
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var btn = document.getElementById("requestBtn");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+      showCodeStatus("Sending your code to " + user.email + "...", "orange");
+
+      var newCode = generateCode();
+
+      db.collection("users").doc(user.uid).set({
+        phase_2_code: newCode,
+        phase_2_code_created: new Date().toISOString()
+      }, { merge: true })
+      .then(function() {
+        return emailjs.send("service_9bn2nfs", "template_4xf9sq6", {
+          to_email: user.email,
+          phase_code: newCode
+        });
+      })
+      .then(function() {
+        showExistingCode(newCode);
+        showCodeStatus("Your access code has been sent to " + user.email + ". Check your inbox.", "lightgreen");
+      })
+      .catch(function(error) {
+        showExistingCode(newCode);
+        showCodeStatus("Code generated but email failed. Contact support.", "red");
+        console.log("Email error:", error);
+      });
+    }
+  </script>
+
+</body>
+</html>

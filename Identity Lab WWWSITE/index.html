@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="process.html" onclick="goToProcess(event)">Process</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+
+
+      <button class="btn-secondary" onclick="login()" >Log In</button>
+
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="overlay"></div>
+
+    <div class="hero-content reveal reveal-bottom reveal-slow">
+      <p class="label">A Recurring Behavioral Calibration System</p>
+
+      <h1>The 28-Day Identity Lab™</h1>
+
+      <p class="subtitle">
+        A structured 28-day system for people who are tired of saying one thing and repeating another.
+      </p>
+
+      <div class="hero-buttons">
+        <button onclick="goToProcess(event)" class="btn-secondary">Learn the Process</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <div class="who-list">
+
+    <div class="who-item reveal reveal-left reveal-fast">
+      <i class="ri-refresh-line"></i>
+      <span>People who keep restarting</span>
+    </div>
+
+    <div class="who-item reveal reveal-right reveal-slow">
+      <i class="ri-focus-3-line"></i>
+      <span>Self-aware but inconsistent</span>
+    </div>
+
+    <div class="who-item reveal reveal-left reveal-fast">
+      <i class="ri-check-double-line"></i>
+      <span>People who want proof, not performance</span>
+    </div>
+
+    <div class="who-item reveal reveal-right reveal-slow">
+      <i class="ri-layout-line"></i>
+      <span>People who want structure, not hype</span>
+    </div>
+
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="section">
+    <div class="container center reveal reveal-bottom reveal-slow">
+      <h2>Identity is not what you claim. It is what you keep becoming.</h2>
+      <p>
+        Most people do not have an ambition problem. They have a recurrence problem.
+        They know what they want. Then the old pattern returns.
+      </p>
+    </div>
+  </section>
+
+  <!-- FEATURES CARDS -->
+  <section class="section">
+    <div class="container">
+      <h2 class="center">What happens inside</h2>
+
+      <div class="cards">
+        <div class="card reveal reveal-bottom reveal-slow">
+          <i class="ri-user-line"></i>
+          <h3>Choose Identity</h3>
+          <p>Define what you are trying to stabilize.</p>
+        </div>
+
+        <div class="card reveal reveal-bottom reveal-fast">
+          <i class="ri-flow-chart"></i>
+          <h3>Structured Flow</h3>
+          <p>Move through phases step by step.</p>
+        </div>
+
+        <div class="card reveal reveal-bottom reveal-slow">
+          <i class="ri-edit-line"></i>
+          <h3>Deep Input</h3>
+          <p>Answer precise behavioral prompts.</p>
+        </div>
+
+        <div class="card reveal reveal-bottom reveal-fast">
+          <i class="ri-lock-line"></i>
+          <h3>Locked Progression</h3>
+          <p>No skipping. Each phase must be earned.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section center proof-section">
+    <div class="container reveal reveal-bottom reveal-slow">
+
+      <h2 class="proof-title">
+        You do not need more self-belief. You need behavioral proof.
+      </h2>
+
+      <p class="proof-sub">
+        This system is designed to eliminate inconsistency through structured repetition.
+      </p>
+
+      <button href="access.html" class="btn-primaryss">Request Access</button>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+
+      <!-- LEFT -->
+      <div class="footer-brand">
+        <img src="logo-Photoroom.png" class="footer-logo">
+        <p>
+          A structured system for behavioral truth, observation, and identity stability.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="process.html">Process</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+
+
+
+      <!-- ACCESS -->
+      <div class="footer-links">
+        <h4>Access</h4>
+        <p>Request access to enter the Lab.</p>
+        <p>Email: access@identitylab.com</p>
+      </div>
+
+      <!-- SOCIAL -->
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <div class="socials">
+           <a href="https://www.tiktok.com/@el.ra.otieno" target="_blank">
+            <i class="ri-tiktok-line"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="footer-bottom">
+      <p>@ 2026 Identity Lab. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="authModal">
+    <div class="modal-box">
+
+      <h2 id="authTitle">Login</h2>
+
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+
+      <button class="btn-primary" onclick="login()">Login</button>
+
+      <p class="switch" onclick="toggleAuth()">Create account</p>
+
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+  </div>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> 
+  
+
+  <script src="app.js"></script>
+</body>
+
+</html>

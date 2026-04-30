@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="logout()">Exit Lab</button>
+    </div>
+  </nav>
+
+  <!-- LAB ENTRY SECTION -->
+  <section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="container center">
+
+      <div class="lab-entry-box">
+
+        <div style="width:60px; height:60px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 25px;">
+          <i class="ri-lock-unlock-line" style="font-size:28px; color:var(--gold);"></i>
+        </div>
+
+        <p style="color:var(--gold); font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:15px;">Secure Access Confirmed</p>
+
+        <h2 style="margin-bottom:15px;">You are inside the Lab.</h2>
+
+        <p style="color:var(--muted); max-width:400px; margin:0 auto 30px; line-height:1.7;">
+          This is a sequential environment. Each phase must be completed before the next becomes available. There is no skipping. There is no shortcut.
+        </p>
+
+        <!-- USER INFO -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:30px;">
+          <p style="color:var(--muted); font-size:13px; margin-bottom:8px;">Logged in as</p>
+          <p id="userEmail" style="color:var(--text); font-size:15px;">—</p>
+          <p style="color:var(--muted); font-size:13px; margin-top:8px;">Current Phase: <span id="currentPhaseLabel" style="color:var(--gold);">1</span></p>
+        </div>
+
+        <!-- PHASE DOTS -->
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;" id="phaseDots">
+          <div class="phase-dot" id="dot1" onclick="goToPhase(1)">1</div>
+          <div class="phase-dot" id="dot2" onclick="goToPhase(2)">2</div>
+          <div class="phase-dot" id="dot3" onclick="goToPhase(3)">3</div>
+          <div class="phase-dot" id="dot4" onclick="goToPhase(4)">4</div>
+          <div class="phase-dot" id="dot5" onclick="goToPhase(5)">5</div>
+          <div class="phase-dot" id="dot6" onclick="goToPhase(6)">6</div>
+          <div class="phase-dot" id="dot7" onclick="goToPhase(7)">7</div>
+          <div class="phase-dot" id="dot8" onclick="goToPhase(8)">8</div>
+        </div>
+
+        <!-- START BUTTON -->
+        <button class="btn-primary" id="mainActionBtn" onclick="mainAction()" style="width:100%; padding:16px; font-size:16px;">
+          Begin Phase 1: Observe the Pattern
+        </button>
+
+        <p style="color:var(--muted); font-size:12px; margin-top:15px;">
+          Your progress is saved automatically.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    var userData = null;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.location.href = "access.html";
+        return;
+      }
+
+      document.getElementById("userEmail").textContent = user.email;
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) {
+          window.location.href = "access.html";
+          return;
+        }
+
+        userData = doc.data();
+        var currentPhase = userData.current_phase || 1;
+        document.getElementById("currentPhaseLabel").textContent = currentPhase;
+
+        // Update all dots
+        updateDots(currentPhase);
+
+        // Update main button
+        updateMainButton(currentPhase);
+
+      }).catch(function(error) {
+        console.log("Error:", error);
+      });
+    });
+
+    function updateDots(currentPhase) {
+      for (var i = 1; i <= 8; i++) {
+        var dot = document.getElementById("dot" + i);
+
+        // Remove all classes first
+        dot.className = "phase-dot";
+
+        if (i < currentPhase) {
+          // Completed phase — filled gold
+          dot.classList.add("completed");
+          dot.style.cursor = "pointer";
+        } else if (i === currentPhase) {
+          // Current phase — gold outline
+          dot.classList.add("active");
+          dot.style.cursor = "pointer";
+        } else {
+          // Locked phase
+          dot.style.cursor = "not-allowed";
+        }
+      }
+    }
+
+    function updateMainButton(currentPhase) {
+      var btn = document.getElementById("mainActionBtn");
+      var phaseNames = [
+        "",
+        "Begin Phase 1: Observe the Pattern",
+        "Continue to Phase 2: Set the Standard",
+        "Continue to Phase 3: Hold the Line",
+        "Continue to Phase 4: Refine the Structure",
+        "Continue to Phase 5: Enter the Flow",
+        "Continue to Phase 6",
+        "Continue to Phase 7",
+        "Continue to Phase 8"
+      ];
+
+      if (currentPhase > 8) {
+        btn.textContent = "View Final Output";
+        btn.onclick = function() { window.location.href = "final-output.html"; };
+      } else {
+        btn.textContent = phaseNames[currentPhase];
+      }
+    }
+
+        function goToPhase(phase) {
+      if (!userData) return;
+
+      var currentPhase = userData.current_phase || 1;
+
+      if (phase > currentPhase) return;
+
+      // Phase 1
+      if (phase === 1) {
+        if (userData.phase_1_completed) {
+          window.location.href = "phase1-complete.html";
+        } else {
+          window.location.href = "phase1.html";
+        }
+      }
+
+      // Phase 2
+      if (phase === 2) {
+        if (userData.phase_2_completed) {
+          window.location.href = "phase2-complete.html";
+        } else if (userData.phase_2_code) {
+          window.location.href = "phase2-entry.html";
+        } else {
+          window.location.href = "phase1-complete.html";
+        }
+      }
+
+      // Phase 3
+      if (phase === 3) {
+        if (userData.phase_3_completed) {
+          window.location.href = "phase3-complete.html";
+        } else if (userData.phase_3_code) {
+          window.location.href = "phase3-entry.html";
+        } else {
+          window.location.href = "phase2-complete.html";
+        }
+      }
+
+      // Phases 4-8 (not built yet)
+            // Phase 4
+      if (phase === 4) {
+        if (userData.phase_4_completed) {
+          window.location.href = "phase4-complete.html";
+        } else if (userData.phase_4_code) {
+          window.location.href = "phase4-entry.html";
+        } else {
+          window.location.href = "phase3-complete.html";
+        }
+      }
+
+          // Phase 5
+      if (phase === 5) {
+        if (userData.phase_5_completed) {
+          window.location.href = "phase5-complete.html";
+        } else if (userData.phase_5_code) {
+          window.location.href = "phase5-entry.html";
+        } else {
+          window.location.href = "phase4-complete.html";
+        }
+      }
+
+           // Phase 6
+      if (phase === 6) {
+        if (userData.phase_6_completed) {
+          window.location.href = "phase6-complete.html";
+        } else if (userData.phase_6_code) {
+          window.location.href = "phase6-entry.html";
+        } else {
+          window.location.href = "phase5-complete.html";
+        }
+      }
+
+            // Phase 7
+      if (phase === 7) {
+        if (userData.phase_7_completed) {
+          window.location.href = "phase7-complete.html";
+        } else if (userData.phase_7_code) {
+          window.location.href = "phase7-entry.html";
+        } else {
+          window.location.href = "phase6-complete.html";
+        }
+      }
+
+            // Phase 8
+      if (phase === 8) {
+        if (userData.phase_8_completed) {
+          window.location.href = "final-output.html";
+        } else if (userData.phase_8_code) {
+          window.location.href = "phase8-entry.html";
+        } else {
+          window.location.href = "phase7-complete.html";
+        }
+      }
+    }
+    function mainAction() {
+      if (!userData) return;
+      var currentPhase = userData.current_phase || 1;
+      goToPhase(currentPhase);
+    }
+
+  </script>
+
+</body>
+
+</html>

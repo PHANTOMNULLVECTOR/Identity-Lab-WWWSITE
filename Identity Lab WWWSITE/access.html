@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="process.html">Process</a>
+        <a href="about.html">About</a>
+        <a href="access.html">Learn Now</a>
+      </div>
+
+      <button class="btn-secondary" onclick="openModal()">Login</button>
+    </div>
+  </nav>
+
+  <!-- ACCESS SECTION -->
+  <section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="container center">
+
+      <div class="access-box">
+
+        <i class="ri-lock-line" style="font-size:40px; color:var(--gold); margin-bottom:20px;"></i>
+
+        <h2>Enter the Lab</h2>
+
+        <p style="color:var(--muted); margin:15px 0 30px; line-height:1.6;">
+          This space is access-controlled.<br>
+          Enter your personal access code to begin.
+        </p>
+
+        <!-- STATUS MESSAGE -->
+        <div id="accessStatus" style="display:none; padding:12px; border-radius:8px; margin-bottom:20px; text-align:center; font-size:14px;"></div>
+
+        <!-- CODE INPUT -->
+        <input 
+  type="text" 
+  id="accessCodeInput" 
+  placeholder="Enter your access code" 
+  autocomplete="new-password"
+  autocorrect="off"
+  autocapitalize="characters"
+  spellcheck="false"
+  style="width:100%; padding:14px; background:#111; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:16px; text-align:center; letter-spacing:2px; outline:none;"
+>
+
+        <!-- SUBMIT BUTTON -->
+        <button class="btn-primary" id="verifyBtn" onclick="verifyAccessCode()" style="width:100%; margin-top:15px; padding:14px; font-size:16px;">
+          Verify Code
+        </button>
+
+        <!-- HELP TEXT -->
+        <p style="color:var(--muted); font-size:13px; margin-top:20px; line-height:1.5;">
+          If you do not have a code, <a href="process.html" style="color:var(--gold); text-decoration:none;">request access here</a>.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="authModal">
+    <div class="modal-box">
+      <h2 id="authTitle">Login</h2>
+      <input type="email" id="email" placeholder="Email" autocomplete="email">
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+      <button class="btn-primary" onclick="login()">Login</button>
+      <p class="switch" onclick="toggleAuth()">Create account</p>
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+  </div>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> 
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <!-- ACCESS CODE LOGIC -->
+  <script>
+
+    // THE ONE AND ONLY ACCESS CODE
+    var THE_ACCESS_CODE = "Identity@21267";
+
+    var statusBox = document.getElementById("accessStatus");
+    var accessInput = document.getElementById("accessCodeInput");
+
+    function showStatus(message, color) {
+      statusBox.style.display = "block";
+      statusBox.style.color = color;
+      if (color === "lightgreen") {
+        statusBox.style.background = "rgba(0,255,0,0.08)";
+      } else if (color === "orange") {
+        statusBox.style.background = "rgba(255,165,0,0.08)";
+      } else {
+        statusBox.style.background = "rgba(255,0,0,0.08)";
+      }
+      statusBox.textContent = message;
+    }
+
+    function verifyAccessCode() {
+      var user = firebase.auth().currentUser;
+      var code = accessInput.value.trim();
+      var btn = document.getElementById("verifyBtn");
+
+      // Check if logged in
+      if (!user) {
+        showStatus("You must be logged in first.", "red");
+        openModal();
+        return;
+      }
+
+      // Check if code is empty
+      if (!code) {
+        showStatus("Please enter your access code.", "red");
+        return;
+      }
+
+      // Check if code matches
+      if (code !== THE_ACCESS_CODE) {
+        showStatus("Invalid access code.", "red");
+        return;
+      }
+
+      // Code is correct
+      btn.disabled = true;
+      btn.textContent = "Verifying...";
+      showStatus("Access granted! Redirecting...", "lightgreen");
+
+      // Save to Firestore that this user has lab access
+      db.collection("users").doc(user.uid).set({
+        email: user.email,
+        current_phase: 1,
+        lab_access: true,
+        started_at: new Date().toISOString()
+      }, { merge: true })
+      .then(function() {
+        // Redirect after 2 seconds
+        setTimeout(function() {
+          window.location.href = "lab.html";
+        }, 2000);
+      })
+      .catch(function(error) {
+        // Even if Firestore fails, still redirect
+        console.log("Firestore save error:", error);
+        setTimeout(function() {
+          window.location.href = "lab.html";
+        }, 2000);
+      });
+
+    }
+
+  </script>
+
+</body>
+
+</html>

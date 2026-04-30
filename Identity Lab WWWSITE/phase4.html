@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 4 | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <!-- PHASE CONTENT -->
+  <section class="section" style="padding-top:100px; padding-bottom:60px;">
+    <div class="phase-container">
+
+      <!-- HEADER -->
+      <div class="phase-header">
+        <p class="phase-label">Phase 4 of 8</p>
+        <h2>Refine the Structure</h2>
+        <p class="phase-desc">You held the line. Now refine the system. Tighten what was loose. Adjust what was inefficient.</p>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="phase-progress-bar">
+        <div class="phase-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <p style="color:var(--muted); font-size:12px; text-align:center; margin-bottom:25px;" id="progressText">0 of 6 steps completed</p>
+
+      <!-- ALREADY COMPLETED -->
+      <div class="phase-complete-box" id="phaseCompleteBox" style="display:none;">
+        <i class="ri-check-double-line" style="font-size:40px; color:var(--gold); margin-bottom:15px;"></i>
+        <h3>Phase 4 Already Completed</h3>
+        <p style="color:var(--muted); margin:15px 0;">You have already refined your structure.</p>
+        <button class="btn-primary" onclick="window.location.href='lab.html'" style="margin-top:15px;">Back to Lab</button>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div id="questionsArea">
+
+        <!-- ===== CARD 1: Behavior Reference ===== -->
+        <div class="question-card" id="card1">
+          <div class="q-number">1</div>
+
+          <!-- LOCKED REFERENCE -->
+          <div style="background:rgba(191,161,74,0.06); border:1px solid rgba(191,161,74,0.2); border-radius:8px; padding:14px; margin-bottom:15px;">
+            <p style="color:var(--gold); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Your Standard from Phase 2</p>
+            <p id="behaviorRef" style="color:var(--text); font-size:14px; line-height:1.6;">—</p>
+          </div>
+
+          <label>What is the behavior you are refining?</label>
+          <textarea id="q1_behavior_reference" maxlength="999" placeholder="Confirm or describe the behavior..." data-min="80" data-max="999"></textarea>
+          <div class="char-count" id="q1_behavior_referenceCount">0 / 999 (min 80)</div>
+          <button class="btn-primary" onclick="nextCard(2)" style="width:100%; margin-top:10px; padding:12px;">Next</button>
+        </div>
+
+        <!-- ===== CARD 2: Friction Detection ===== -->
+        <div class="question-card" id="card2" style="display:none;">
+          <div class="q-number">2</div>
+          <label>Where did this feel unstable, slow, or forced?</label>
+          <textarea id="q2_friction_detection" maxlength="999" placeholder="Describe the friction points..." data-min="80" data-max="999"></textarea>
+          <div class="char-count" id="q2_friction_detectionCount">0 / 999 (min 80)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextCard(1)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextCard(3)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- ===== CARD 3: Trigger Check ===== -->
+        <div class="question-card" id="card3" style="display:none;">
+          <div class="q-number">3</div>
+          <label>Does your current trigger still hold?</label>
+
+          <!-- RADIO OPTIONS -->
+          <div class="radio-group" id="triggerStatusGroup">
+            <label class="radio-option">
+              <input type="radio" name="trigger_status" value="keep" onchange="handleTriggerChange()">
+              <span class="radio-mark"></span>
+              <span>Yes, keep it</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="trigger_status" value="adjust" onchange="handleTriggerChange()">
+              <span class="radio-mark"></span>
+              <span>No, adjust it</span>
+            </label>
+          </div>
+
+          <!-- CONDITIONAL: New trigger type -->
+          <div id="triggerTypeSection" style="display:none; margin-top:15px;">
+            <label style="font-size:13px; color:var(--muted); margin-bottom:8px;">What should the new trigger be?</label>
+            <div class="radio-group" id="triggerTypeGroup">
+              <label class="radio-option">
+                <input type="radio" name="trigger_type" value="same_time" onchange="handleTriggerTypeChange()">
+                <span class="radio-mark"></span>
+                <span>Same time daily</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="trigger_type" value="after_action" onchange="handleTriggerTypeChange()">
+                <span class="radio-mark"></span>
+                <span>After a specific action</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="trigger_type" value="specific_location" onchange="handleTriggerTypeChange()">
+                <span class="radio-mark"></span>
+                <span>At a specific location</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="trigger_type" value="other" onchange="handleTriggerTypeChange()">
+                <span class="radio-mark"></span>
+                <span>Other</span>
+              </label>
+            </div>
+
+            <!-- CONDITIONAL: Custom trigger -->
+            <div id="customTriggerSection" style="display:none; margin-top:12px;">
+              <input type="text" id="q5_trigger_detail" maxlength="200" placeholder="Describe your new trigger..." style="width:100%; padding:12px; background:#111; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; outline:none;">
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-secondary" onclick="nextCard(2)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextCard(4)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- ===== CARD 4: Environment Correction ===== -->
+        <div class="question-card" id="card4" style="display:none;">
+          <div class="q-number">4</div>
+          <label>What needs to change in your environment to reduce friction?</label>
+          <textarea id="q6_environment_correction" maxlength="999" placeholder="Describe what needs to change..." data-min="40" data-max="999"></textarea>
+          <div class="char-count" id="q6_environment_correctionCount">0 / 999 (min 40)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextCard(3)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextCard(5)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- ===== CARD 5: Minimum Standard ===== -->
+        <div class="question-card" id="card5" style="display:none;">
+          <div class="q-number">5</div>
+          <label>Was your minimum standard too high, too low, or correct?</label>
+
+          <div class="radio-group" id="minStandardGroup">
+            <label class="radio-option">
+              <input type="radio" name="min_standard" value="too_high" onchange="handleMinStandardChange()">
+              <span class="radio-mark"></span>
+              <span>Too high</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="min_standard" value="too_low" onchange="handleMinStandardChange()">
+              <span class="radio-mark"></span>
+              <span>Too low</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="min_standard" value="correct" onchange="handleMinStandardChange()">
+              <span class="radio-mark"></span>
+              <span>Correct</span>
+            </label>
+          </div>
+
+          <!-- CONDITIONAL: Corrected standard -->
+          <div id="correctedStandardSection" style="display:none; margin-top:12px;">
+            <label style="font-size:13px; color:var(--muted); margin-bottom:8px;">Set the corrected minimum standard.</label>
+            <input type="text" id="q8_corrected_minimum_standard" maxlength="300" placeholder="Your corrected standard..." style="width:100%; padding:12px; background:#111; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; outline:none;">
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-secondary" onclick="nextCard(4)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextCard(6)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- ===== CARD 6: Tracking Integrity ===== -->
+        <div class="question-card" id="card6" style="display:none;">
+          <div class="q-number">6</div>
+          <label>Did you track this consistently?</label>
+
+          <div class="radio-group" id="trackingGroup">
+            <label class="radio-option">
+              <input type="radio" name="tracking" value="yes" onchange="handleTrackingChange()">
+              <span class="radio-mark"></span>
+              <span>Yes</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tracking" value="no" onchange="handleTrackingChange()">
+              <span class="radio-mark"></span>
+              <span>No</span>
+            </label>
+          </div>
+
+          <!-- CONDITIONAL: Tracking failure reason -->
+          <div id="trackingFailureSection" style="display:none; margin-top:12px;">
+            <label style="font-size:13px; color:var(--muted); margin-bottom:8px;">What broke the tracking?</label>
+            <input type="text" id="q10_tracking_failure_reason" maxlength="300" placeholder="Explain what broke the tracking..." style="width:100%; padding:12px; background:#111; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; outline:none;">
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn-secondary" onclick="nextCard(5)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="saveAndContinue()" style="flex:1; padding:12px;">Save and Continue</button>
+          </div>
+        </div>
+
+        <!-- SUBMIT SECTION -->
+        <div id="submitSection" style="display:none; margin-top:25px;">
+          <div class="closing-statement">
+            <p>The behavior is not being judged. The structure is being refined. Review your responses before submitting.</p>
+          </div>
+          <button class="btn-primary" id="submitBtn" onclick="submitPhase4()" style="width:100%; padding:16px; font-size:16px;">
+            Refine the Structure
+          </button>
+          <p style="color:var(--muted); font-size:12px; text-align:center; margin-top:10px;">
+            Your progress is saved automatically.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+
+    var currentCard = 1;
+    var saveTimeout = null;
+    var totalSteps = 6;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.location.href = "access.html";
+        return;
+      }
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) {
+          window.location.href = "access.html";
+          return;
+        }
+
+        var data = doc.data();
+
+        if (!data.phase_3_completed) {
+          window.location.href = "lab.html";
+          return;
+        }
+
+        if (data.phase_4_completed) {
+          document.getElementById("phaseCompleteBox").style.display = "block";
+          document.getElementById("questionsArea").style.display = "none";
+          document.querySelector(".phase-progress-bar").style.display = "none";
+          document.getElementById("progressText").style.display = "none";
+          return;
+        }
+
+        // Load behavior reference from Phase 2
+        if (data.phase_2_answers && data.phase_2_answers.q5_standard_declaration) {
+          document.getElementById("behaviorRef").textContent = data.phase_2_answers.q5_standard_declaration;
+        }
+
+        // Load saved answers
+        if (data.phase_4_answers) {
+          var a = data.phase_4_answers;
+
+          if (a.q1_behavior_reference) {
+            document.getElementById("q1_behavior_reference").value = a.q1_behavior_reference;
+            updateCount("q1_behavior_reference");
+          }
+          if (a.q2_friction_detection) {
+            document.getElementById("q2_friction_detection").value = a.q2_friction_detection;
+            updateCount("q2_friction_detection");
+          }
+          if (a.q5_trigger_detail) {
+            document.getElementById("q5_trigger_detail").value = a.q5_trigger_detail;
+          }
+          if (a.q6_environment_correction) {
+            document.getElementById("q6_environment_correction").value = a.q6_environment_correction;
+            updateCount("q6_environment_correction");
+          }
+          if (a.q8_corrected_minimum_standard) {
+            document.getElementById("q8_corrected_minimum_standard").value = a.q8_corrected_minimum_standard;
+          }
+          if (a.q10_tracking_failure_reason) {
+            document.getElementById("q10_tracking_failure_reason").value = a.q10_tracking_failure_reason;
+          }
+
+          // Restore radio selections
+          if (a.q3_trigger_status) {
+            var radios3 = document.querySelectorAll('input[name="trigger_status"]');
+            for (var i = 0; i < radios3.length; i++) {
+              if (radios3[i].value === a.q3_trigger_status) {
+                radios3[i].checked = true;
+                handleTriggerChange();
+              }
+            }
+          }
+          if (a.q4_trigger_type) {
+            var radios4 = document.querySelectorAll('input[name="trigger_type"]');
+            for (var i = 0; i < radios4.length; i++) {
+              if (radios4[i].value === a.q4_trigger_type) {
+                radios4[i].checked = true;
+                handleTriggerTypeChange();
+              }
+            }
+          }
+          if (a.q7_minimum_standard_status) {
+            var radios7 = document.querySelectorAll('input[name="min_standard"]');
+            for (var i = 0; i < radios7.length; i++) {
+              if (radios7[i].value === a.q7_minimum_standard_status) {
+                radios7[i].checked = true;
+                handleMinStandardChange();
+              }
+            }
+          }
+          if (a.q9_tracking_consistency) {
+            var radios9 = document.querySelectorAll('input[name="tracking"]');
+            for (var i = 0; i < radios9.length; i++) {
+              if (radios9[i].value === a.q9_tracking_consistency) {
+                radios9[i].checked = true;
+                handleTrackingChange();
+              }
+            }
+          }
+        }
+
+        // Setup text input listeners
+        var textIds = ["q1_behavior_reference", "q2_friction_detection", "q6_environment_correction"];
+        textIds.forEach(function(qId) {
+          var el = document.getElementById(qId);
+          if (el) {
+            el.addEventListener("input", function() {
+              updateCount(qId);
+              autoSavePhase4();
+            });
+          }
+        });
+
+        updateProgress();
+
+      }).catch(function(error) {
+        console.log("Error:", error);
+      });
+    });
+
+    /* ===== CONDITIONAL LOGIC ===== */
+
+    function handleTriggerChange() {
+      var selected = document.querySelector('input[name="trigger_status"]:checked');
+      if (selected && selected.value === "adjust") {
+        document.getElementById("triggerTypeSection").style.display = "block";
+      } else {
+        document.getElementById("triggerTypeSection").style.display = "none";
+        document.getElementById("customTriggerSection").style.display = "none";
+        // Uncheck trigger type radios
+        var radios = document.querySelectorAll('input[name="trigger_type"]');
+        for (var i = 0; i < radios.length; i++) radios[i].checked = false;
+      }
+      autoSavePhase4();
+    }
+
+    function handleTriggerTypeChange() {
+      var selected = document.querySelector('input[name="trigger_type"]:checked');
+      if (selected && selected.value === "other") {
+        document.getElementById("customTriggerSection").style.display = "block";
+      } else {
+        document.getElementById("customTriggerSection").style.display = "none";
+      }
+      autoSavePhase4();
+    }
+
+    function handleMinStandardChange() {
+      var selected = document.querySelector('input[name="min_standard"]:checked');
+      if (selected && (selected.value === "too_high" || selected.value === "too_low")) {
+        document.getElementById("correctedStandardSection").style.display = "block";
+      } else {
+        document.getElementById("correctedStandardSection").style.display = "none";
+      }
+      autoSavePhase4();
+    }
+
+    function handleTrackingChange() {
+      var selected = document.querySelector('input[name="tracking"]:checked');
+      if (selected && selected.value === "no") {
+        document.getElementById("trackingFailureSection").style.display = "block";
+      } else {
+        document.getElementById("trackingFailureSection").style.display = "none";
+      }
+      autoSavePhase4();
+    }
+
+    /* ===== CHARACTER COUNT ===== */
+
+    function updateCount(qId) {
+      var el = document.getElementById(qId);
+      var countEl = document.getElementById(qId + "Count");
+      if (!el || !countEl) return;
+
+      var length = el.value.trim().length;
+      var min = parseInt(el.getAttribute("data-min"));
+      var max = parseInt(el.getAttribute("data-max"));
+
+      countEl.textContent = length + " / " + max + " (min " + min + ")";
+      countEl.className = "char-count";
+
+      if (length < min) {
+        countEl.classList.add("error");
+      } else if (length > max) {
+        countEl.classList.add("error");
+      } else {
+        countEl.classList.add("ok");
+      }
+    }
+
+    /* ===== AUTOSAVE ===== */
+
+    function autoSavePhase4() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(function() {
+        savePhase4Answers();
+      }, 2000);
+    }
+
+    function savePhase4Answers() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var answers = {};
+
+      answers.q1_behavior_reference = document.getElementById("q1_behavior_reference").value;
+      answers.q2_friction_detection = document.getElementById("q2_friction_detection").value;
+
+      var triggerStatus = document.querySelector('input[name="trigger_status"]:checked');
+      answers.q3_trigger_status = triggerStatus ? triggerStatus.value : "";
+
+      var triggerType = document.querySelector('input[name="trigger_type"]:checked');
+      answers.q4_trigger_type = triggerType ? triggerType.value : "";
+
+      answers.q5_trigger_detail = document.getElementById("q5_trigger_detail").value;
+      answers.q6_environment_correction = document.getElementById("q6_environment_correction").value;
+
+      var minStandard = document.querySelector('input[name="min_standard"]:checked');
+      answers.q7_minimum_standard_status = minStandard ? minStandard.value : "";
+
+      answers.q8_corrected_minimum_standard = document.getElementById("q8_corrected_minimum_standard").value;
+
+      var tracking = document.querySelector('input[name="tracking"]:checked');
+      answers.q9_tracking_consistency = tracking ? tracking.value : "";
+
+      answers.q10_tracking_failure_reason = document.getElementById("q10_tracking_failure_reason").value;
+
+      db.collection("users").doc(user.uid).set({
+        phase_4_answers: answers
+      }, { merge: true })
+      .then(function() {
+        console.log("Phase 4 saved");
+      })
+      .catch(function(error) {
+        console.log("Save error:", error);
+      });
+    }
+
+    /* ===== NAVIGATION ===== */
+
+    function nextCard(num) {
+      savePhase4Answers();
+
+      for (var i = 1; i <= 6; i++) {
+        document.getElementById("card" + i).style.display = "none";
+      }
+      document.getElementById("submitSection").style.display = "none";
+
+      if (num >= 1 && num <= 6) {
+        document.getElementById("card" + num).style.display = "block";
+        currentCard = num;
+      }
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateProgress() {
+      var completed = 0;
+
+      // Card 1
+      if (document.getElementById("q1_behavior_reference").value.trim().length >= 80) completed++;
+      // Card 2
+      if (document.getElementById("q2_friction_detection").value.trim().length >= 40) completed++;
+      // Card 3
+      if (document.querySelector('input[name="trigger_status"]:checked')) completed++;
+      // Card 4
+      if (document.getElementById("q6_environment_correction").value.trim().length >= 40) completed++;
+      // Card 5
+      if (document.querySelector('input[name="min_standard"]:checked')) completed++;
+      // Card 6
+      if (document.querySelector('input[name="tracking"]:checked')) completed++;
+
+      var percent = (completed / totalSteps) * 100;
+      document.getElementById("progressFill").style.width = percent + "%";
+      document.getElementById("progressText").textContent = completed + " of " + totalSteps + " steps completed";
+    }
+
+    function saveAndContinue() {
+      savePhase4Answers();
+
+      for (var i = 1; i <= 6; i++) {
+        document.getElementById("card" + i).style.display = "none";
+      }
+      document.getElementById("submitSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ===== SUBMISSION ===== */
+
+    function submitPhase4() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var errors = [];
+
+      // Text validations
+      var q1 = document.getElementById("q1_behavior_reference").value.trim();
+      if (q1.length < 80) errors.push("Question 1 needs at least 80 characters.");
+
+      var q2 = document.getElementById("q2_friction_detection").value.trim();
+      if (q2.length < 80) errors.push("Question 2 needs at least 80 characters.");
+
+      var q6 = document.getElementById("q6_environment_correction").value.trim();
+      if (q6.length < 40) errors.push("Question 4 needs at least 40 characters.");
+
+      // Radio validations
+      if (!document.querySelector('input[name="trigger_status"]:checked')) {
+        errors.push("Question 3 requires a selection.");
+      }
+
+      var triggerStatus = document.querySelector('input[name="trigger_status"]:checked');
+      if (triggerStatus && triggerStatus.value === "adjust") {
+        if (!document.querySelector('input[name="trigger_type"]:checked')) {
+          errors.push("Question 4 requires a trigger type selection.");
+        }
+        var triggerType = document.querySelector('input[name="trigger_type"]:checked');
+        if (triggerType && triggerType.value === "other") {
+          if (document.getElementById("q5_trigger_detail").value.trim().length < 10) {
+            errors.push("Custom trigger needs at least 10 characters.");
+          }
+        }
+      }
+
+      if (!document.querySelector('input[name="min_standard"]:checked')) {
+        errors.push("Question 5 requires a selection.");
+      }
+
+      var minStandard = document.querySelector('input[name="min_standard"]:checked');
+      if (minStandard && (minStandard.value === "too_high" || minStandard.value === "too_low")) {
+        if (document.getElementById("q8_corrected_minimum_standard").value.trim().length < 20) {
+          errors.push("Corrected standard needs at least 20 characters.");
+        }
+      }
+
+      if (!document.querySelector('input[name="tracking"]:checked')) {
+        errors.push("Question 6 requires a selection.");
+      }
+
+      var tracking = document.querySelector('input[name="tracking"]:checked');
+      if (tracking && tracking.value === "no") {
+        if (document.getElementById("q10_tracking_failure_reason").value.trim().length < 20) {
+          errors.push("Tracking failure reason needs at least 20 characters.");
+        }
+      }
+
+      if (errors.length > 0) {
+        alert("Please fix:\n\n" + errors.join("\n"));
+        return;
+      }
+
+      var btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      savePhase4Answers();
+
+      db.collection("users").doc(user.uid).set({
+        phase_4_completed: true,
+        phase_4_submitted_at: new Date().toISOString(),
+        current_phase: 5
+      }, { merge: true })
+      .then(function() {
+        alert("Phase 4 submitted successfully.");
+        window.location.href = "phase4-complete.html";
+      })
+      .catch(function(error) {
+        alert("Submission failed. Try again.");
+        btn.disabled = false;
+        btn.textContent = "Refine the Structure";
+        console.log("Error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+</html>

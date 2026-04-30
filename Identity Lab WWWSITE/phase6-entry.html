@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 6 Entry | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <section class="section" style="min-height:100vh; display:flex; align-items:center;">
+    <div class="phase-container">
+
+      <div class="access-box">
+
+        <div style="width:60px; height:60px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 25px;">
+          <i class="ri-lock-2-line" style="font-size:28px; color:var(--gold);"></i>
+        </div>
+
+        <p class="phase-label">Phase 6 of 8</p>
+        <h2 style="margin-bottom:10px;">Face the Evidence</h2>
+
+        <p style="color:var(--muted); line-height:1.6; margin-bottom:8px;">
+          This phase is access-controlled.
+        </p>
+
+        <div style="background:rgba(0,150,255,0.06); border:1px solid rgba(0,150,255,0.15); border-radius:10px; padding:14px 16px; margin:15px 0 25px; display:flex; align-items:center; gap:10px;">
+          <i class="ri-mail-line" style="color:#60a5fa; font-size:18px; flex-shrink:0;"></i>
+          <span style="color:#93c5fd; font-size:13px; line-height:1.5;">
+            Your unique access code has been sent to <strong id="userEmailText">your email</strong>.
+          </span>
+        </div>
+
+        <div id="entryStatus" style="display:none; padding:12px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px;"></div>
+
+        <input 
+          type="text" 
+          id="phase6CodeInput" 
+          placeholder="Enter your Phase 6 code" 
+          autocomplete="new-password"
+          autocorrect="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          style="width:100%; padding:14px; background:#111; border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:16px; text-align:center; letter-spacing:2px; outline:none;"
+        >
+
+        <button class="btn-primary" id="verifyBtn" onclick="verifyPhase6Code()" style="width:100%; margin-top:15px; padding:14px; font-size:16px;">
+          Enter Phase 6
+        </button>
+
+        <p style="text-align:center; margin-top:20px;">
+          <a href="lab.html" style="color:var(--muted); text-decoration:none; font-size:13px;">
+            <i class="ri-arrow-left-line"></i> Back to Lab
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+
+    var phase6Input = document.getElementById("phase6CodeInput");
+
+    phase6Input.addEventListener("input", function() {
+      phase6Input.value = phase6Input.value.toUpperCase();
+    });
+
+    function showEntryStatus(message, color) {
+      var box = document.getElementById("entryStatus");
+      box.style.display = "block";
+      box.style.color = color;
+      if (color === "lightgreen") box.style.background = "rgba(0,255,0,0.08)";
+      else if (color === "orange") box.style.background = "rgba(255,165,0,0.08)";
+      else box.style.background = "rgba(255,0,0,0.08)";
+      box.textContent = message;
+    }
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) { window.location.href = "access.html"; return; }
+
+      document.getElementById("userEmailText").textContent = user.email;
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) { window.location.href = "access.html"; return; }
+
+        var data = doc.data();
+
+        if (!data.phase_5_completed) { window.location.href = "lab.html"; return; }
+        if (!data.phase_6_code) { window.location.href = "phase5-complete.html"; return; }
+        if (data.phase_6_completed) { window.location.href = "phase6-complete.html"; return; }
+
+      }).catch(function(error) { console.log("Error:", error); });
+    });
+
+    function verifyPhase6Code() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var code = phase6Input.value.trim();
+      var btn = document.getElementById("verifyBtn");
+
+      if (!code) { showEntryStatus("Please enter your access code.", "red"); return; }
+
+      btn.disabled = true;
+      btn.textContent = "Verifying...";
+      showEntryStatus("Checking your code...", "orange");
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists) {
+          showEntryStatus("User not found.", "red");
+          btn.disabled = false;
+          btn.textContent = "Enter Phase 6";
+          return;
+        }
+
+        var data = doc.data();
+
+        if (code !== data.phase_6_code) {
+          showEntryStatus("Invalid access code. Check your email.", "red");
+          btn.disabled = false;
+          btn.textContent = "Enter Phase 6";
+          return;
+        }
+
+        showEntryStatus("Access granted! Entering Phase 6...", "lightgreen");
+
+        setTimeout(function() { window.location.href = "phase6.html"; }, 1500);
+
+      }).catch(function(error) {
+        showEntryStatus("Something went wrong. Try again.", "red");
+        btn.disabled = false;
+        btn.textContent = "Enter Phase 6";
+        console.log("Error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>

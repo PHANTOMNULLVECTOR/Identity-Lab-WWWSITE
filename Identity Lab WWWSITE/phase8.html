@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 8 | Identity Lab</title>
+
+  <link rel="icon" href="data:,">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-container">
+      <img src="logo-Photoroom.png" class="logo">
+      <div class="nav-links" id="navLinks">
+        <a href="lab.html">The Lab</a>
+      </div>
+      <button class="btn-secondary" onclick="window.location.href='lab.html'">Exit</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:100px; padding-bottom:60px;">
+    <div class="phase-container">
+
+      <!-- HEADER -->
+      <div class="phase-header">
+        <p class="phase-label">Phase 8 of 8</p>
+        <h2>Close the Cycle</h2>
+        <p class="phase-desc">The final phase. What held, what changed, what becomes your baseline, and what you are leaving behind.</p>
+      </div>
+
+      <!-- PROGRESS BAR -->
+      <div class="phase-progress-bar">
+        <div class="phase-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <p style="color:var(--muted); font-size:12px; text-align:center; margin-bottom:25px;" id="progressText">0 of 4 completed</p>
+
+      <!-- ALREADY COMPLETED -->
+      <div class="phase-complete-box" id="phaseCompleteBox" style="display:none;">
+        <i class="ri-check-double-line" style="font-size:40px; color:var(--gold); margin-bottom:15px;"></i>
+        <h3>Phase 8 Already Completed</h3>
+        <p style="color:var(--muted); margin:15px 0;">You have already closed your cycle.</p>
+        <button class="btn-primary" onclick="window.location.href='final-output.html'" style="margin-top:15px;">View Your Output</button>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div id="questionsArea">
+
+        <!-- Q1 -->
+        <div class="question-card" id="card1">
+          <div class="q-number">1</div>
+          <label>What held through this cycle?</label>
+          <textarea id="q1_what_held" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q1_what_heldCount">0 / 999 (min 120)</div>
+          <button class="btn-primary" onclick="nextQuestion(2)" style="width:100%; margin-top:10px; padding:12px;">Next</button>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card" id="card2" style="display:none;">
+          <div class="q-number">2</div>
+          <label>What changed in a measurable way?</label>
+          <textarea id="q2_what_changed" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q2_what_changedCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(1)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextQuestion(3)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card" id="card3" style="display:none;">
+          <div class="q-number">3</div>
+          <label>What now becomes your baseline going forward?</label>
+          <textarea id="q3_new_baseline" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q3_new_baselineCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(2)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="nextQuestion(4)" style="flex:1; padding:12px;">Next</button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-card" id="card4" style="display:none;">
+          <div class="q-number">4</div>
+          <label>What are you closing and not carrying into the next cycle?</label>
+          <textarea id="q4_what_closing" maxlength="999" placeholder="Write your response..." data-min="120" data-max="999"></textarea>
+          <div class="char-count" id="q4_what_closingCount">0 / 999 (min 120)</div>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn-secondary" onclick="nextQuestion(3)" style="flex:1; padding:12px;">Back</button>
+            <button class="btn-primary" onclick="showSubmitSection()" style="flex:1; padding:12px;">Save and Continue</button>
+          </div>
+        </div>
+
+        <!-- ACKNOWLEDGMENT -->
+        <div class="question-card" id="card5" style="display:none;">
+          <div class="q-number" style="background:transparent; border:2px solid var(--gold); color:var(--gold);">✓</div>
+          <label style="font-size:16px; font-weight:600;">Final Acknowledgment</label>
+          <p style="color:var(--muted); font-size:13px; margin:12px 0 20px; line-height:1.6;">
+            This is not a promise. This is a statement based on the evidence you have submitted across all eight phases.
+          </p>
+
+          <label class="checkbox-option" id="ackLabel">
+            <input type="checkbox" id="ackCheck" onchange="updateAckStatus()">
+            <span class="checkbox-mark"></span>
+            <span>I am closing this cycle based on proof, not intention.</span>
+          </label>
+        </div>
+
+        <!-- SUBMIT SECTION -->
+        <div id="submitSection" style="display:none; margin-top:25px;">
+          <div class="closing-statement">
+            <p>This is the final submission. Once submitted, your 28-day cycle is complete and your behavioral interpretation will be generated.</p>
+          </div>
+          <button class="btn-primary" id="submitBtn" onclick="submitPhase8()" style="width:100%; padding:16px; font-size:16px;">
+            Close the Cycle
+          </button>
+          <p style="color:var(--muted); font-size:12px; text-align:center; margin-top:10px;">
+            This action is final.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+
+    var questionIds = [
+      "q1_what_held",
+      "q2_what_changed",
+      "q3_new_baseline",
+      "q4_what_closing"
+    ];
+
+    var currentQ = 1;
+    var saveTimeout = null;
+
+    auth.onAuthStateChanged(function(user) {
+      if (!user) { window.location.href = "access.html"; return; }
+
+      db.collection("users").doc(user.uid).get().then(function(doc) {
+        if (!doc.exists || !doc.data().lab_access) { window.location.href = "access.html"; return; }
+
+        var data = doc.data();
+
+        if (!data.phase_7_completed) { window.location.href = "lab.html"; return; }
+
+        if (data.phase_8_completed) {
+          document.getElementById("phaseCompleteBox").style.display = "block";
+          document.getElementById("questionsArea").style.display = "none";
+          document.querySelector(".phase-progress-bar").style.display = "none";
+          document.getElementById("progressText").style.display = "none";
+          return;
+        }
+
+        // Load saved answers
+        if (data.phase_8_answers) {
+          questionIds.forEach(function(qId) {
+            if (data.phase_8_answers[qId]) {
+              var el = document.getElementById(qId);
+              if (el) { el.value = data.phase_8_answers[qId]; updateCount(qId); }
+            }
+          });
+
+          // Restore acknowledgment
+          if (data.phase_8_acknowledgment) {
+            document.getElementById("ackCheck").checked = true;
+          }
+        }
+
+        // Setup char counters
+        questionIds.forEach(function(qId) {
+          var el = document.getElementById(qId);
+          if (el) { el.addEventListener("input", function() { updateCount(qId); autoSavePhase8(); }); }
+        });
+
+        updateProgress();
+
+      }).catch(function(error) { console.log("Error:", error); });
+    });
+
+    function updateCount(qId) {
+      var el = document.getElementById(qId);
+      var countEl = document.getElementById(qId + "Count");
+      if (!el || !countEl) return;
+
+      var length = el.value.trim().length;
+      var min = parseInt(el.getAttribute("data-min"));
+      var max = parseInt(el.getAttribute("data-max"));
+
+      countEl.textContent = length + " / " + max + " (min " + min + ")";
+      countEl.className = "char-count";
+      if (length < min) countEl.classList.add("error");
+      else if (length > max) countEl.classList.add("error");
+      else countEl.classList.add("ok");
+    }
+
+    function autoSavePhase8() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(function() { savePhase8Answers(); }, 2000);
+    }
+
+    function savePhase8Answers() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var answers = {};
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value;
+      });
+
+      var acked = document.getElementById("ackCheck").checked;
+
+      db.collection("users").doc(user.uid).set({
+        phase_8_answers: answers,
+        phase_8_acknowledgment: acked
+      }, { merge: true })
+      .then(function() { console.log("Phase 8 saved"); })
+      .catch(function(error) { console.log("Save error:", error); });
+    }
+
+    function updateAckStatus() {
+      var label = document.getElementById("ackLabel");
+      var checked = document.getElementById("ackCheck").checked;
+      if (checked) {
+        label.style.borderColor = "var(--gold)";
+      } else {
+        label.style.borderColor = "var(--border)";
+      }
+      autoSavePhase8();
+    } 
+
+        function updateAckStatus() {
+      var label = document.getElementById("ackLabel");
+      var checked = document.getElementById("ackCheck").checked;
+      if (checked) {
+        label.style.borderColor = "var(--gold)";
+      } else {
+        label.style.borderColor = "var(--border)";
+      }
+      autoSavePhase8();
+    }
+
+    function showSubmitSection() {
+      savePhase8Answers();
+
+      for (var i = 1; i <= 5; i++) {
+        document.getElementById("card" + i).style.display = "none";
+      }
+
+      document.getElementById("submitSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function nextQuestion(num) {
+      savePhase8Answers();
+
+      for (var i = 1; i <= 5; i++) { document.getElementById("card" + i).style.display = "none"; }
+      document.getElementById("submitSection").style.display = "none";
+
+      if (num >= 1 && num <= 5) {
+        document.getElementById("card" + num).style.display = "block";
+        currentQ = num;
+      }
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateProgress() {
+      var answered = 0;
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el && el.value.trim().length >= parseInt(el.getAttribute("data-min"))) answered++;
+      });
+
+      var percent = (answered / 4) * 100;
+      document.getElementById("progressFill").style.width = percent + "%";
+      document.getElementById("progressText").textContent = answered + " of 4 completed";
+    }
+
+    function submitPhase8() {
+      var user = firebase.auth().currentUser;
+      if (!user) return;
+
+      var btn = document.getElementById("submitBtn");
+      var errors = [];
+
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (!el) return;
+        var min = parseInt(el.getAttribute("data-min"));
+        var max = parseInt(el.getAttribute("data-max"));
+        var text = el.value.trim();
+
+        if (text.length < min) errors.push("Question " + qId.replace("q", "") + " needs at least " + min + " characters.");
+        if (text.length > max) errors.push("Question " + qId.replace("q", "") + " exceeds " + max + " characters.");
+      });
+
+      if (!document.getElementById("ackCheck").checked) {
+        errors.push("You must check the acknowledgment to continue.");
+      }
+
+      if (errors.length > 0) { alert("Please fix:\n\n" + errors.join("\n")); return; }
+
+      btn.disabled = true;
+      btn.textContent = "Closing cycle...";
+
+      var answers = {};
+      questionIds.forEach(function(qId) {
+        var el = document.getElementById(qId);
+        if (el) answers[qId] = el.value.trim();
+      });
+
+      db.collection("users").doc(user.uid).set({
+        phase_8_answers: answers,
+        phase_8_completed: true,
+        phase_8_submitted_at: new Date().toISOString(),
+        cycle_completed: true,
+        cycle_completed_at: new Date().toISOString()
+      }, { merge: true })
+      .then(function() {
+        alert("Cycle closed. Your behavioral interpretation will now be generated.");
+        window.location.href = "final-output.html";
+      })
+      .catch(function(error) {
+        alert("Submission failed. Try again.");
+        btn.disabled = false;
+        btn.textContent = "Close the Cycle";
+        console.log("Error:", error);
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>
